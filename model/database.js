@@ -18,16 +18,8 @@ con.connect(function(err) {
   if (err) throw err;
   console.log("Connected!");
 
-  let sql =
-    "DROP TABLE if exists Quiz; CREATE TABLE 'Quiz' ('q-id int NOT NULL, 'question' varchar NOT NULL UNIQUE, 'answer_id' int NOT NULL, PRIMARY KEY ('q-id'));";
-    "DROP TABLE if exists Answers; CREATE TABLE 'Answers' ('answer_id' int NOT NULL AUTO_INCREMENT, 'answer' varchar NOT NULL UNIQUE, 'concern_id' int NOT NULL, PRIMARY KEY ('answer_id'));";
-    "DROP TABLE if exists Skin; CREATE TABLE 'Skin' ( 'concern_id' int NOT NULL AUTO_INCREMENT, 'concern' varchar NOT NULL, 'ingredient_id' int NOT NULL, PRIMARY KEY ('concern_id'));";
-    "DROP TABLE if exists Ingredients; CREATE TABLE 'Ingredients' ('ingredient_id' INT NOT NULL AUTO_INCREMENT, 'name' varchar NOT NULL, 'alt-name' varchar NOT NULL, 'benefits' varchar NOT NULL, 'disadvantages' varchar NOT NULL, PRIMARY KEY ('ingredient_id'));";
-    "ALTER TABLE 'Quiz' ADD CONSTRAINT 'Quiz_fk0' FOREIGN KEY ('answer_id') REFERENCES 'Answers'('answer_id');"
-    "ALTER TABLE 'Answers' ADD CONSTRAINT 'Answers_fk0' FOREIGN KEY ('concern_id') REFERENCES 'Skin'('concern_id');"
-    "ALTER TABLE 'Skin' ADD CONSTRAINT 'Skin_fk0' FOREIGN KEY ('concern_id') REFERENCES 'Answers'('concern-id');"
-    "ALTER TABLE 'Skin' ADD CONSTRAINT 'Skin_fk1' FOREIGN KEY ('ingredient_id') REFERENCES 'Ingredients'('ingredient_id');"
-    con.query(sql, function(err, result) {
+  let sql = "DROP TABLE if exists quiz; CREATE TABLE quiz(q_id INT NOT NULL AUTO_INCREMENT, question VARCHAR(255) not null, answer_id INT NOT NULL, PRIMARY KEY (q_id));";
+  con.query(sql, function(err, result) {
     if (err) throw err;
     console.log("Tables creation was successful!");
 
