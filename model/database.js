@@ -18,7 +18,7 @@ con.connect(function(err) {
   if (err) throw err;
   console.log("Connected!");
 
-  let sql = "DROP TABLE if exists quiz; CREATE TABLE quiz(q_id INT NOT NULL AUTO_INCREMENT, question VARCHAR(255) not null, answer_id INT NOT NULL, PRIMARY KEY (q_id));";
+  let sql = "DROP TABLE if exists quiz; CREATE TABLE quiz(id INT NOT NULL AUTO_INCREMENT, question VARCHAR(255) not null, PRIMARY KEY (id));";
   con.query(sql, function(err, result) {
     if (err) throw err;
     console.log("Tables creation `quiz` was successful!");

@@ -12,8 +12,7 @@ router.get('/', function(req, res, next) {
 });
 
 // GET one question
-router.get("/:q_id", async function(req, res) {
-  //your code here
+router.get("/:question_id", async function(req, res) {
   const { question_id } = req.params;
   try {
     const results = await db(
@@ -27,7 +26,6 @@ router.get("/:q_id", async function(req, res) {
 
 // ADD a new question
 router.post("/", async function(req, res) {
-  //your code here
   const { question } = req.body;
   try {
     const results = await db(
@@ -40,13 +38,24 @@ router.post("/", async function(req, res) {
 });
 
 //DELETE a question
-router.delete("/:q_id", async function(req, res) {
-  //your code here
+router.delete("/:question_id", async function(req, res) {
   const { question_id } = req.params;
   try {
     const results = await db(`DELETE FROM quiz WHERE id = ${question_id};`);
     res.send(results.data);
   } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+// UPDATE a question
+router.put("/:question_id", async (req, res) => {
+  const { question_id } = req.params;
+  const { question } = req.body;
+  try {
+    const results = await db(`UPDATE quiz SET question = '${question}' WHERE id = ${question_id};`);
+    res.send(results.data);
+    } catch (err) {
     res.status(500).send(err);
   }
 });
