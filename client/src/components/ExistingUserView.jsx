@@ -9,6 +9,7 @@ function AdminView() {
         <form>
             <input className="userID" type="text" placeholder="Username" />
             <input className="userPW" type="text" placeholder="Password"/>
+            <button>Login</button>
         </form>
     </div>
   );

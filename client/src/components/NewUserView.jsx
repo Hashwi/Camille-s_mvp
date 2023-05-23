@@ -1,30 +1,30 @@
 import React, { useEffect, useState } from "react";
 
 function UserView() {
-  const [question, setQuestion] = useState("");
+  const [questionnaire, setQuestionnaire] = useState("");
   const [answer, setAnswer] = useState("");
 
   useEffect(() => {
-    showNextQuestion();
+    showQuestionnaire();
   }, []);
 
   
-  const showNextQuestion = () => {
-    fetch("/api/questions")
-    .then(res => res.json())
-    .then(question => {
-      setQuestion(question);
+  const showQuestionnaire = () => {
+    fetch("/api/questionnaire")
+    .then(response => response.json())
+    .then(questionnaire => {
+      setQuestionnaire(questionnaire);
     })
     . catch(error => {
     console.log(error)
     });
   };
 
-  const handleSubmit = event => {
+  /* const handleSubmit = event => {
     event.preventDefault();
     addAnswer();
     showNextQuestion();
-  };
+  }; */
 
 
   return (

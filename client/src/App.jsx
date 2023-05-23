@@ -6,9 +6,9 @@ import ExistingUserView from './components/ExistingUserView';
 import NewUserView from './components/NewUserView';
 
 function App() {
-  const [isNew, setIsNew] = useState(false);
+  const [isNew, setIsNew] = useState(true);
 
-  const handleChangeView = (isAdmin) => {
+  const handleChangeView = (isNew) => {
     setIsNew(isNew);
   };
 
