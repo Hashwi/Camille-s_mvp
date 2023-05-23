@@ -5,7 +5,7 @@ function AdminView() {
 
   return (
     <div>
-        <h2>Admin View</h2>
+        <h2>Welcome back!</h2>
         <form>
             <input className="userID" type="text" placeholder="Username" />
             <input className="userPW" type="text" placeholder="Password"/>
