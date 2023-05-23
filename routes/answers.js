@@ -26,10 +26,10 @@ router.get("/:answer_id", async function(req, res) {
 
 // ADD an new answer
 router.post("/", async function(req, res) {
-  const { answer } = req.body;
+  const { answer, question_ID } = req.body;
   try {
     const results = await db(
-      `INSERT INTO answers (answer) VALUE ("${answer}");`
+      `INSERT INTO answers (answer, question_ID) VALUES ("${answer}", ${question_ID});`
     );
     res.send(results.data);
   } catch (err) {

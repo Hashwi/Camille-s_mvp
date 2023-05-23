@@ -7,6 +7,8 @@ const cors = require('cors');
 
 const indexRouter = require('./routes/index');
 const questionsRouter = require('./routes/questions');
+const answersRouter = require('./routes/answers');
+
 
 const app = express();
 
@@ -19,5 +21,6 @@ app.use(cookieParser());
 
 app.use('/api/index', indexRouter);
 app.use('/api/questions', questionsRouter);
+app.use('/api/answers', answersRouter);
 
 module.exports = app;
