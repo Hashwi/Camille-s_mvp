@@ -2,21 +2,21 @@ const express = require('express');
 const router = express.Router();
 const db = require("../model/helper");
 
-/* GET questions listing. */
+/* GET answers listing. */
 router.get('/', function(req, res, next) {
-  db("SELECT * from quiz;")
+  db("SELECT * from answers;")
     .then(results => {
       res.send(results.data);
     })
     .catch(error => res.status(500).send(error));
 });
 
-// GET one question
-router.get("/:question_id", async function(req, res) {
-  const { question_id } = req.params;
+// GET one answer
+router.get("/:answer_id", async function(req, res) {
+  const { answer_id } = req.params;
   try {
     const results = await db(
-      `SELECT * FROM quiz WHERE id = ${question_id};`
+      `SELECT * FROM answers WHERE id = ${answer_id};`
     );
     res.send(results.data);
   } catch (error) {
@@ -24,12 +24,12 @@ router.get("/:question_id", async function(req, res) {
   }
 });
 
-// ADD a new question
+// ADD an new answer
 router.post("/", async function(req, res) {
-  const { question } = req.body;
+  const { answer } = req.body;
   try {
     const results = await db(
-      `INSERT INTO quiz (question) VALUE ("${question}");`
+      `INSERT INTO answers (answer) VALUE ("${answer}");`
     );
     res.send(results.data);
   } catch (err) {
@@ -37,23 +37,23 @@ router.post("/", async function(req, res) {
   }
 });
 
-//DELETE a question
-router.delete("/:question_id", async function(req, res) {
-  const { question_id } = req.params;
+//DELETE an answer
+router.delete("/:answer_id", async function(req, res) {
+  const { answer_id } = req.params;
   try {
-    const results = await db(`DELETE FROM quiz WHERE id = ${question_id};`);
+    const results = await db(`DELETE FROM answers WHERE id = ${answer_id};`);
     res.send(results.data);
   } catch (err) {
     res.status(500).send(err);
   }
 });
 
-// UPDATE a question
-router.put("/:question_id", async (req, res) => {
-  const { question_id } = req.params;
-  const { question } = req.body;
+// UPDATE an answer
+router.put("/:answer_id", async (req, res) => {
+  const { answer_id } = req.params;
+  const { answer } = req.body;
   try {
-    const results = await db(`UPDATE quiz SET question = '${question}' WHERE id = ${question_id};`);
+    const results = await db(`UPDATE answers SET answer = '${answer}' WHERE id = ${answer_id};`);
     res.send(results.data);
     } catch (err) {
     res.status(500).send(err);

@@ -18,10 +18,10 @@ con.connect(function(err) {
   if (err) throw err;
   console.log("Connected!");
 
-  let sql = "DROP TABLE if exists quiz; CREATE TABLE quiz(id INT NOT NULL AUTO_INCREMENT, question VARCHAR(255) not null, PRIMARY KEY (id));";
+  let sql = "DROP TABLE if exists quiz; DROP TABLE if exists answers; CREATE TABLE quiz(id INT NOT NULL AUTO_INCREMENT, question VARCHAR(255) not null, PRIMARY KEY (id)); CREATE TABLE answers(id INT NOT NULL AUTO_INCREMENT, answer VARCHAR(255) not null, question_ID INT NOT NULL, PRIMARY KEY (id));";
   con.query(sql, function(err, result) {
     if (err) throw err;
-    console.log("Tables creation `quiz` was successful!");
+    console.log("Tables creation was successful!");
 
     console.log("Closing...");
   });
