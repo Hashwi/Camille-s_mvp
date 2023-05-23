@@ -51,9 +51,9 @@ router.delete("/:answer_id", async function(req, res) {
 // UPDATE an answer
 router.put("/:answer_id", async (req, res) => {
   const { answer_id } = req.params;
-  const { answer } = req.body;
+  const { answer, question_ID } = req.body;
   try {
-    const results = await db(`UPDATE answers SET answer = '${answer}' WHERE id = ${answer_id};`);
+    const results = await db(`UPDATE answers SET answer = ("${answer}"), question_ID = (${question_ID}) WHERE id = ${answer_id};`);
     res.send(results.data);
     } catch (err) {
     res.status(500).send(err);
