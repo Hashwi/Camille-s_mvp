@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const db = require("..model/helper.js");
+const db = require("../model/helper");
 
 /* GET questions listing. */
 router.get('/', function(req, res, next) {
