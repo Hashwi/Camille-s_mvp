@@ -4,7 +4,7 @@ const db = require("../model/helper");
 
 // GET all the questionnaire.
 router.get('/', function(req, res, next) {
-  db("SELECT * from quiz INNER JOIN answers ON quiz.question_ID = answers.question_ID;")
+  db("SELECT * from quiz INNER JOIN answers ON quiz.id = answers.question_ID;")
     .then(results => {
       res.send(results.data);
     })
