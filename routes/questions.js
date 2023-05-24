@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
 });
 
 // GET one question with corresponding answers
-router.get("/:question_id", async function(req, res) {
+router.get("/:question_id/answers", async function(req, res) {
   const { question_id } = req.params;
   try {
     const questionResult = await db(
