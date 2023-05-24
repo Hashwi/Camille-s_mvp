@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from "react";
 
 function UserView() {
-  const [questionnaire, setQuestionnaire] = useState("");
-  const [answer, setAnswer] = useState("");
+  const [quiz, setQuiz] = useState("");
 
   useEffect(() => {
-    showQuestionnaire();
+    showQuestionnaire(1);
   }, []);
 
   
-  const showQuestionnaire = () => {
-    fetch("/api/questionnaire")
+  const showQuestionnaire = id => {
+    fetch(`/api/questionnaire/${id}`)
     .then(response => response.json())
-    .then(questionnaire => {
-      setQuestionnaire(questionnaire);
+    .then(data => {
+      setQuiz(data);
     })
     . catch(error => {
     console.log(error)
@@ -32,7 +31,12 @@ function UserView() {
         <h2>New here?</h2>
         <h3>Skin assessment</h3>
         <form onSubmit={e => handleSubmit(e)}>
-
+          {quiz.map(option => (
+              <li className="quiz" key={option.id}>
+                {option.question}
+                {option.answer}
+              </li>
+          ))};
           <button>Submit</button>
         </form>
     </div>
