@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 
 function UserView() {
   const [quiz, setQuiz] = useState([]);
+  const { question, answers } = quiz;
 
   useEffect(() => {
     showQuestionnaire(1);
   }, []);
 
-  
   const showQuestionnaire = id => {
     fetch(`/api/questions/${id}`)
     .then(response => response.json())
@@ -19,14 +19,12 @@ function UserView() {
     });
   };
 
-
   const handleSubmit = event => {
     event.preventDefault();
     // addAnswer();
     showQuestionnaire(quiz[quiz.length -1].id +1);
   };
 
-  const { question, answers } = quiz;
 
   return (
     <div>
