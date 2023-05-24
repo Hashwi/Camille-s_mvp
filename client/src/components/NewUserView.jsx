@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 function UserView() {
-  const [quiz, setQuiz] = useState("");
+  const [quiz, setQuiz] = useState([]);
 
   useEffect(() => {
     showQuestionnaire(1);
@@ -19,25 +19,28 @@ function UserView() {
     });
   };
 
-  /* const handleSubmit = event => {
+
+  const handleSubmit = event => {
     event.preventDefault();
-    addAnswer();
-    showNextQuestion();
-  }; */
+    // addAnswer();
+    showQuestionnaire(quiz[quiz.length -1].id +1);
+  };
 
 
   return (
     <div>
         <h2>New here?</h2>
         <h3>Skin assessment</h3>
-        <form onSubmit={e => handleSubmit(e)}>
+        <form onSubmit={handleSubmit}>
+          <ul>
           {quiz.map(option => (
               <li className="quiz" key={option.id}>
                 {option.question}
                 {option.answer}
               </li>
           ))};
-          <button>Submit</button>
+          </ul>
+          <button type="submit">Submit</button>
         </form>
     </div>
   );
