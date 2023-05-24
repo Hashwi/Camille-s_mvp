@@ -23,7 +23,7 @@ router.get("/:question_id", async function(req, res) {
   try {
     const results = await db(
       `SELECT * FROM quiz INNER JOIN answers ON quiz.id = answers.question_ID WHERE quiz.id = ${question_id};`
-    );
+      );
     res.send(results.data);
   } catch (error) {
     res.status(500).send(error);

@@ -11,14 +11,23 @@ router.get('/', function(req, res, next) {
     .catch(error => res.status(500).send(error));
 });
 
-// GET one question
+// GET one question with corresponding answers
 router.get("/:question_id", async function(req, res) {
   const { question_id } = req.params;
   try {
-    const results = await db(
+    const question = await db(
       `SELECT * FROM quiz WHERE id = ${question_id};`
     );
-    res.send(results.data);
+    const answers = await db(
+      `SELECT * FROM answers WHERE question_ID = ${question_id};`
+    );
+    
+    const quizQuestion = question.data[0].question;
+    const quizAnswers = answers.data.map(object => object.answer)
+    const quizSet = [quizQuestion, quizAnswers]
+
+    res.send(quizSet);
+
   } catch (error) {
     res.status(500).send(error);
   }
