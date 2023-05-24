@@ -22,9 +22,10 @@ router.get("/:question_id/answers", async function(req, res) {
       `SELECT * FROM answers WHERE question_ID = ${question_id};`
     );
     
+    const id = questionResult.data[0].id
     const question = questionResult.data[0].question;
     const answers = answersResult.data.map(object => object.answer)
-    const quizSet = {question, answers}
+    const quizSet = {id, question, answers}
 
     res.send(quizSet);
 

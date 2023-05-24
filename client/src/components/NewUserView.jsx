@@ -18,10 +18,11 @@ function UserView() {
     });
   };
 
+
   const handleSubmit = event => {
     event.preventDefault();
     // addAnswer();
-    showQuestionnaire(quiz.id +1);
+    showQuestionnaire((quiz.id)+1);
   };
   const { question, answers } = quiz;
 
@@ -36,7 +37,7 @@ function UserView() {
                 <li className="quiz" key={index}>
                   {answer}
                 </li>
-            ))};
+            ))}
           </ul>
           <button type="submit">Submit</button>
         </form>
