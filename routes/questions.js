@@ -15,16 +15,16 @@ router.get('/', function(req, res, next) {
 router.get("/:question_id", async function(req, res) {
   const { question_id } = req.params;
   try {
-    const question = await db(
+    const questionResult = await db(
       `SELECT * FROM quiz WHERE id = ${question_id};`
     );
-    const answers = await db(
+    const answersResult = await db(
       `SELECT * FROM answers WHERE question_ID = ${question_id};`
     );
     
-    const quizQuestion = question.data[0].question;
-    const quizAnswers = answers.data.map(object => object.answer)
-    const quizSet = [quizQuestion, quizAnswers]
+    const question = questionResult.data[0].question;
+    const answers = answersResult.data.map(object => object.answer)
+    const quizSet = {question, answers}
 
     res.send(quizSet);
 

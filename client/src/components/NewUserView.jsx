@@ -9,7 +9,7 @@ function UserView() {
 
   
   const showQuestionnaire = id => {
-    fetch(`/api/questionnaire/${id}`)
+    fetch(`/api/questions/${id}`)
     .then(response => response.json())
     .then(data => {
       setQuiz(data);
@@ -26,19 +26,18 @@ function UserView() {
     showQuestionnaire(quiz[quiz.length -1].id +1);
   };
 
-  const question = quiz[0].question;
-  const answers = quiz.map(option => option.answer);
+  const { question, answers } = quiz;
 
   return (
     <div>
         <h2>New here?</h2>
         <h3>Skin assessment</h3>
         <form onSubmit={handleSubmit}>
+        <h4>{question}</h4>
           <ul>
-          {question}
             {answers.map((answer, index) => (
-                <li className="quiz" key={option.id}>
-                  {option.answer}
+                <li className="quiz" key={index}>
+                  {answer}
                 </li>
             ))};
           </ul>
