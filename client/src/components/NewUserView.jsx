@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 
 
 function UserView() {
-  const [quiz, setQuiz] = useState({ question: "", answers: [] });
+  const [quiz, setQuiz] = useState({ id:0, question: "", answers: [] });
   const [selectedValues, setSelectedValues] = useState([]);
-  const [isSelected, setIsSelected] = useState(false);
+  const [quizResults, setQuizResults] = useState([]);
   const { id, question, answers } = quiz;
   const totalQuestions = 5;
 
@@ -31,7 +31,6 @@ function UserView() {
     } else {
       setSelectedValues([...selectedValues, answer]);
     }
-    setIsSelected(!isSelected);
   }
 
   const handleFormSubmit = event => {
@@ -40,13 +39,25 @@ function UserView() {
       alert("Please select an answer.");
       return;
     }
-    if (quiz.id === totalQuestions) {
-      alert(`Your answers are ${selectedValues.join(", ")}.`);
-      setSelectedValues([]);
-      showQuestionnaire(1);
+    if (quiz.id === 3 && selectedValues.length > 3) {
+      alert("Please select maximum 3 concerns.");
+      return;
+    } 
+    if (quiz.id !== 3 && selectedValues.length > 1) {
+      alert("Please select one answer only.");
+      return;
     }
+    const result = { id, question, answer: [selectedValues.join(", ")] };
+    setQuizResults([...quizResults, result]);
+    setSelectedValues([]);
     if (quiz.id < totalQuestions) {
       showQuestionnaire((quiz.id) + 1);
+    }
+    if (quiz.id === totalQuestions) {
+      alert(`Your answers are ${quizResults.map((result) => result.answer).join(", ")}.`);      
+      setSelectedValues([]);
+      setQuizResults([])
+      showQuestionnaire(1);
     }
   };
 
@@ -78,9 +89,13 @@ function UserView() {
         </form>
         <div>
           <h4>Your answers are:</h4>
-          {selectedValues.map((value, index) => (
-                <p key={index}>{value}</p>
-              ))}
+          {quizResults.map((result, index) => (
+          <p key={index}>
+            {result.question}
+            <br/>
+            {result.answer}
+          </p>
+          ))}
         </div>
     </div>
   );
