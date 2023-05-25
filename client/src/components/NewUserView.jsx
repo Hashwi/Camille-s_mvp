@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { components } from "react-select";
-import Select from 'react-select'
+
 
 function UserView() {
   const [quiz, setQuiz] = useState({ question: "", answers: [] });
   const [selectedValues, setSelectedValues] = useState([]);
   const [isSelected, setIsSelected] = useState(false);
+  const { id, question, answers } = quiz;
+  const totalQuestions = 5;
+
+
 
   useEffect(() => {
     showQuestionnaire(1);
@@ -38,7 +41,7 @@ function UserView() {
       return;
     }
     if (quiz.id === totalQuestions) {
-      alert(`Your concerns are ${selectedValues}.`);
+      alert(`Your answers are ${selectedValues.join(", ")}.`);
       setSelectedValues([]);
       showQuestionnaire(1);
     }
@@ -47,8 +50,6 @@ function UserView() {
     }
   };
 
-  const { id, question, answers } = quiz;
-  const totalQuestions = 5;
 
   return (
     <div>
