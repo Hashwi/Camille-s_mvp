@@ -59,7 +59,7 @@ function UserView() {
             <h4>
               {id}. {question}
             </h4>
-            <ul>
+            <ul className="answersContainer">
               {answers.map((answer, index) => (
                 <li key={answers[index]}>
                   <button 
@@ -71,7 +71,9 @@ function UserView() {
               ))}
             </ul>
           </div>
-          <button type="submit">Submit</button>
+          <div className="submitBtn">
+            <button type="submit">Submit</button>
+          </div>
         </form>
         <div>
           <h4>Your answers are:</h4>

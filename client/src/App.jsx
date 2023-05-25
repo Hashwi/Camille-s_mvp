@@ -14,11 +14,11 @@ function App() {
 
   return (
       <div className="appContainer">
-        <h1>Ingredients Finder</h1>
-        <aside>
-          <button className="oldUserButton" style={{backgroundColor: isNew? "green":""}} onClick={() => handleChangeView(true)}>Registered User</button>        
-          <button className="newUserButton" style={{backgroundColor: isNew? "":"green"}} onClick={() => handleChangeView(false)}>New User</button>
+        <aside className='viewButtons'>
+          <button className="oldUserButton" style={{backgroundColor: isNew? "#8DB580":""}} onClick={() => handleChangeView(true)}>Registered User</button>        
+          <button className="newUserButton" style={{backgroundColor: isNew? "":"#8DB580"}} onClick={() => handleChangeView(false)}>New User</button>
         </aside>
+        <h1>Ingredients Finder</h1>
         {isNew? (
         <ExistingUserView />
         ) : (
