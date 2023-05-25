@@ -35,6 +35,8 @@ function UserView() {
 
   const handleFormSubmit = event => {
     event.preventDefault();
+    const result = { id, question, answer: selectedValues.join(", ") };
+
     if (selectedValues.length === 0) {
       alert("Please select an answer.");
       return;
@@ -47,20 +49,19 @@ function UserView() {
       alert("Please select one answer only.");
       return;
     }
-    const result = { id, question, answer: [selectedValues.join(", ")] };
+
+    if (quiz.id === totalQuestions) {
+      alert(`Your answers are: ${quizResults.map((result) => result.question + " " + result.answer).join(" \n ")}.`);      
+      setSelectedValues([]);
+      setQuizResults([]);
+      showQuestionnaire(1);
+    };
+
     setQuizResults([...quizResults, result]);
     setSelectedValues([]);
-    if (quiz.id < totalQuestions) {
-      showQuestionnaire((quiz.id) + 1);
-    }
-    if (quiz.id === totalQuestions) {
-      alert(`Your answers are ${quizResults.map((result) => result.answer).join(", ")}.`);      
-      setSelectedValues([]);
-      setQuizResults([])
-      showQuestionnaire(1);
-    }
-  };
-
+    showQuestionnaire((quiz.id) +1);
+    console.log(quiz.id)
+  }
 
   return (
     <div>
