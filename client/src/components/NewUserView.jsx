@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { components } from "react-select";
+import Select from 'react-select'
 
 function UserView() {
   const [quiz, setQuiz] = useState({ question: "", answers: [] });
   const [selectedValues, setSelectedValues] = useState([]);
-  const [isSelected, setIsSelected] = useState(true);
+  const [isSelected, setIsSelected] = useState(false);
 
   useEffect(() => {
     showQuestionnaire(1);
@@ -21,32 +22,28 @@ function UserView() {
     });
   };
 
-  const handleToggle = (isSelected) => {
+  const handleSelect = (answer) => {
+    if (selectedValues.includes(answer)) {
+      setSelectedValues(selectedValues.filter(value => value !== answer));
+    } else {
+      setSelectedValues([...selectedValues, answer]);
+    }
     setIsSelected(!isSelected);
   }
 
-  const handleSubmit = event => {
+  const handleFormSubmit = event => {
     event.preventDefault();
-
+    if (selectedValues.length === 0) {
+      alert("Please select an answer.");
+      return;
+    }
     if (quiz.id === totalQuestions) {
-      setSelectedValues([])
-      setIsSelected(Array(quiz.answers.length).fill(false))
-      showQuestionnaire(1)
+      alert(`Your concerns are ${selectedValues}.`);
+      setSelectedValues([]);
+      showQuestionnaire(1);
     }
-    
-    const selected = [];
-    isSelected.forEach((state, index) => {
-      if (state) {
-        selected.push(quiz.answers[index]);
-      }
-    });
-
-    if (selected.length > 0) {
-      setIsSelected([...selectedValues, ...selected]);
-    }
-
     if (quiz.id < totalQuestions) {
-      showQuestionnaire((quiz.id)+1);
+      showQuestionnaire((quiz.id) + 1);
     }
   };
 
@@ -57,7 +54,7 @@ function UserView() {
     <div>
         <h2>New here?</h2>
         <h3>Skin assessment</h3>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleFormSubmit}>
           <div>
             <h4>
               {id}. {question}
@@ -66,8 +63,9 @@ function UserView() {
               {answers.map((answer, index) => (
                 <li key={answers[index]}>
                   <button 
-                      className={isSelected? "selected" : ""} 
-                      onClick={()=>handleToggle(false)}
+                      type="button"
+                      className={selectedValues.includes(answer) ? "selected" : ""} 
+                      onClick={() => handleSelect(answer)}
                   >{answer}</button>
                 </li>
               ))}
