@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { components } from "react-select";
 
 function UserView() {
   const [quiz, setQuiz] = useState({ question: "", answers: [] });
   const [selectedValues, setSelectedValues] = useState([]);
-  const [isSelected, setIsSelected] = useState([]);
+  const [isSelected, setIsSelected] = useState(true);
 
   useEffect(() => {
     showQuestionnaire(1);
@@ -14,19 +15,14 @@ function UserView() {
     .then(response => response.json())
     .then(data => {
       setQuiz(data);
-      setIsSelected(Array(data.answers.length).fill(false));
     })
     . catch(error => {
     console.log(error)
     });
   };
 
-  const handleToggle = (index) => {
-    setIsSelected((prevState) => {
-      const updatedStates = [...prevState];
-      updatedStates[index] = !updatedStates[index];
-      return updatedStates;
-    });
+  const handleToggle = (isSelected) => {
+    setIsSelected(!isSelected);
   }
 
   const handleSubmit = event => {
@@ -71,7 +67,7 @@ function UserView() {
                 <li key={answers[index]}>
                   <button 
                       className={isSelected? "selected" : ""} 
-                      onClick={()=>handleToggle(index)}
+                      onClick={()=>handleToggle(false)}
                   >{answer}</button>
                 </li>
               ))}

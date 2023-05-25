@@ -16,8 +16,8 @@ function App() {
       <div className="appContainer">
         <h1>Ingredients Finder</h1>
         <aside>
-          <button className="adminButton" onClick={() => handleChangeView(true)}>Registered User</button>        
-          <button className="userButton" onClick={() => handleChangeView(false)}>New User</button>
+          <button className="oldUserButton" style={{backgroundColor: isNew? "green":""}} onClick={() => handleChangeView(true)}>Registered User</button>        
+          <button className="newUserButton" style={{backgroundColor: isNew? "":"green"}} onClick={() => handleChangeView(false)}>New User</button>
         </aside>
         {isNew? (
         <ExistingUserView />
