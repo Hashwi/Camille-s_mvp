@@ -11,18 +11,78 @@ router.get('/', function(req, res, next) {
     .catch(error => res.status(500).send(error));
 });
 
-// GET one answer
-router.get("/:answer_id", async function(req, res) {
+// GET one answer with corresponding concerns
+router.get("/:answer_id/concerns", async function(req, res) {
   const { answer_id } = req.params;
   try {
-    const results = await db(
+    const answersResult = await db(
       `SELECT * FROM answers WHERE id = ${answer_id};`
     );
-    res.send(results.data);
+    const concernsResult = await db(
+      `SELECT * FROM concerns WHERE answer_ID = ${answer_id};`
+    )
+
+  const id = answersResult.data[0].id;
+  const answer = answersResult.data[0].answer;
+  const concerns = concernsResult.data.map(object => object.concern);
+  const quizOutcome = {id, answer, concerns};
+
+    res.send(quizOutcome);
   } catch (error) {
     res.status(500).send(error);
   }
 });
+
+// GET one answer with corresponding concerns and ingredients
+router.get("/:answer_id/concerns/ingredients", async function(req, res) {
+  const { answer_id } = req.params;
+  try {
+    const answersResult = await db(
+      `SELECT * FROM answers WHERE id = ${answer_id};`
+    );
+    const concernsResult = await db(
+      `SELECT * FROM concerns WHERE answer_ID = ${answer_id};`
+    )
+    const matchingIngredients = await db(
+      `SELECT concerns.concern, concernsIngredients.concern_ID, ingredients.name, concernsIngredients.ingredient_ID FROM concerns  LEFT JOIN concernsIngredients ON concerns.id = concernsIngredients.concern_ID LEFT JOIN ingredients ON ingredients.id = concernsIngredients.ingredient_ID WHERE answer_ID = ${answer_id};`
+    )
+
+    console.log(matchingIngredients.data)
+
+    const answer = answersResult.data[0].answer;
+    const concerns = concernsResult.data.map(object => object.concern); 
+    const ingredients = matchingIngredients.data.map(object => object.name);
+    const recommendation = {id, answer, concerns, ingredients};
+
+    res.send(recommendation);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+// SELECT table1.object, table2.object
+// FROM table1
+// INNER JOIN table2 ON table1.id - table2.id
+
+
+// GET one concern with corresponding ingredients
+// router.get("/concern.id/ingredients", async function(req, res) {
+//   const { concern.id } = req.params;
+//   try {
+//     const in
+
+  
+  
+    
+//     res.send(quizOutcome);
+//   } catch (error) {
+//     res.status(500).send(error);
+//   }
+// });
+
+
+
+
 
 // ADD an new answer
 router.post("/", async function(req, res) {
