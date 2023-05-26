@@ -6,17 +6,32 @@ ul {
   list-style-type: none;
 }
 
+li {
+  font-size: 1.12em;
+}
+
 h1 {
   color: #8DB580;
   text-align: center;
+  font-size: 3em;
+  font-family: 'Pacifico', cursive;
 }
 
 h2 {
   color: #8DB580;
+  font-size: 2em;
+  font-family: 'Playfair Display', serif;
 }
 
 h3 {
   color: #8DB580;
+  font-size: 1.75em;
+  font-family: 'Playfair Display', serif;
+}
+
+h4 {
+  font-size: 1.25em;
+  font-family: 'Playfair Display', serif;
 }
 
 .selected {
@@ -24,17 +39,19 @@ h3 {
 }
 
 button {
+  font-family: 'Playfair Display', serif;
   color: #4B4A67;
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
+  font-weight: 600;
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  box-shadow: 5px 5px 10px 5px #c2b4aa ;
 }
+
 button:hover {
   background-color: #C2CFB2;
 }
@@ -43,21 +60,35 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+button:active{
+  box-shadow: inset 3px 3px 7px 3px #8DB580 ;
+}
+
+button:disabled {
+  background: #e7e8e9;
+  color: #9fa3a9;
+  cursor: not-allowed;
+}
+
 .answersContainer {
   display: flex;
   align-content: space-between;
   justify-content: space-around;
 }
 
+.viewButtons {
+  margin-left: 50px;
+}
+
 .submitBtn {
   text-align: center;
+  font-size: 1.25em;
 }
 
 @media (prefers-color-scheme: light) {
   :root {
     color: #4B4A67;
     background-color: #DDD1C7;
-    font-size: 20;
   }
   button {
     background-color: #f9f9f9;

@@ -41,7 +41,7 @@ function UserView() {
 
     const result = { id, question, answer: selectedAnswers.join(", ") };
     const newResults = [...quizResults, result];
-    
+
     if (selectedAnswers.length === 0) {
       alert("Please select an answer.");
       return;
