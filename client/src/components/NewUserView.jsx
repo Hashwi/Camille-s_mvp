@@ -35,12 +35,13 @@ function UserView() {
     }
   }
 
-  const handleFormSubmit = event => {
+  const onClickNext = event => {
     event.preventDefault();
     setSelectedAnswerIndex(null);
 
     const result = { id, question, answer: selectedAnswers.join(", ") };
-
+    const newResults = [...quizResults, result];
+    
     if (selectedAnswers.length === 0) {
       alert("Please select an answer.");
       return;
@@ -54,24 +55,22 @@ function UserView() {
       return;
     }
 
-    if (quiz.id === totalQuestions) {
-      alert(`Your answers are: ${quizResults.map((result) => result.question + " " + result.answer).join(" \n ")}.`);      
+    if (quiz.id !== totalQuestions) {
+      showQuestionnaire((quiz.id) +1);
+      setQuizResults(newResults);
       setSelectedAnswers([]);
+    } else {
+      alert(`Your answers are: ${newResults.map((result) => result.question + " " + result.answer).join(" \n ")}.`);      
       setQuizResults([]);
       showQuestionnaire(1);
-    };
-
-    setQuizResults([...quizResults, result]);
-    setSelectedAnswers([]);
-    showQuestionnaire((quiz.id) +1);
-    // console.log(quiz.id)
+    }
   }
 
   return (
     <div>
         <h2>New here?</h2>
         <h3>Skin assessment</h3>
-        <form onSubmit={handleFormSubmit}>
+        <form onSubmit={onClickNext}>
           <div>
             <h4>
               {id}. {question}
@@ -90,7 +89,9 @@ function UserView() {
             </ul>
           </div>
           <div className="submitBtn">
-            <button type="submit">Submit</button>
+            <button type="submit" disabled={selectedAnswerIndex === null}>
+              {quiz.id >= totalQuestions ? 'Finish' : 'Next'}
+            </button>
           </div>
         </form>
         <div>
