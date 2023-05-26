@@ -72,8 +72,9 @@ button:disabled {
 
 .answersContainer {
   display: flex;
+  flex-wrap: wrap;
   align-content: space-between;
-  justify-content: space-around;
+  justify-content: space-evenly;
 }
 
 .viewButtons {
