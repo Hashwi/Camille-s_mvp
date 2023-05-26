@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 
 function UserView() {
   const [quiz, setQuiz] = useState({ id:0, question: "", answers: [] });
-  const [selectedValues, setSelectedValues] = useState([]);
+  const [selectedAnswers, setSelectedAnswers] = useState([]);
+  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null)
   const [quizResults, setQuizResults] = useState([]);
   const { id, question, answers } = quiz;
   const totalQuestions = 5;
@@ -25,42 +26,45 @@ function UserView() {
     });
   };
 
-  const handleSelect = (answer) => {
-    if (selectedValues.includes(answer)) {
-      setSelectedValues(selectedValues.filter(value => value !== answer));
-    } else {
-      setSelectedValues([...selectedValues, answer]);
+  const onAnswerSelected = (answer, index) => {
+    setSelectedAnswerIndex(index)
+    if (quiz.id === 3 && selectedAnswers.length < 3) {
+      setSelectedAnswers([...selectedAnswers, answer]);
+    } else if (quiz.id !== 3) {
+      setSelectedAnswers([answer]);
     }
   }
 
   const handleFormSubmit = event => {
     event.preventDefault();
-    const result = { id, question, answer: selectedValues.join(", ") };
+    setSelectedAnswerIndex(null);
 
-    if (selectedValues.length === 0) {
+    const result = { id, question, answer: selectedAnswers.join(", ") };
+
+    if (selectedAnswers.length === 0) {
       alert("Please select an answer.");
       return;
     }
-    if (quiz.id === 3 && selectedValues.length > 3) {
-      alert("Please select maximum 3 concerns.");
+    if (quiz.id === 3 && selectedAnswers.length > 3) {
+      alert("Please select 3 concerns.");
       return;
     } 
-    if (quiz.id !== 3 && selectedValues.length > 1) {
+    if (quiz.id !== 3 && selectedAnswers.length > 1) {
       alert("Please select one answer only.");
       return;
     }
 
     if (quiz.id === totalQuestions) {
       alert(`Your answers are: ${quizResults.map((result) => result.question + " " + result.answer).join(" \n ")}.`);      
-      setSelectedValues([]);
+      setSelectedAnswers([]);
       setQuizResults([]);
       showQuestionnaire(1);
     };
 
     setQuizResults([...quizResults, result]);
-    setSelectedValues([]);
+    setSelectedAnswers([]);
     showQuestionnaire((quiz.id) +1);
-    console.log(quiz.id)
+    // console.log(quiz.id)
   }
 
   return (
@@ -77,8 +81,9 @@ function UserView() {
                 <li key={answers[index]}>
                   <button 
                       type="button"
-                      className={selectedValues.includes(answer) ? "selected" : ""} 
-                      onClick={() => handleSelect(answer)}
+                      className={quiz.id === 3 && selectedAnswers.includes(answer) ? 'selected' : null ||
+                        selectedAnswerIndex === index ? 'selected' : null} 
+                      onClick={() => onAnswerSelected(answer, index)}
                   >{answer}</button>
                 </li>
               ))}

@@ -20,7 +20,7 @@ h3 {
 }
 
 .selected {
-  background-color: #C2CFB2;
+  background-color: #8DB580;
 }
 
 button {
@@ -46,7 +46,7 @@ button:focus-visible {
 .answersContainer {
   display: flex;
   align-content: space-between;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .submitBtn {
