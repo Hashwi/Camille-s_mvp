@@ -34,7 +34,7 @@ router.get("/:answer_id/concerns", async function(req, res) {
 });
 
 // GET one answer with corresponding concerns and ingredients
-router.get("/:answer_id/concerns/ingredients", async function(req, res) {
+router.get("/:answer_id", async function(req, res) {
   const { answer_id } = req.params;
   try {
     const answersResult = await db(
