@@ -8,8 +8,7 @@ function UserView() {
   const [quizResults, setQuizResults] = useState([]);
   const [showResult, setShowResult] = useState(false);
   const { id, question, answers } = quiz;
-  const [recommendedIngredients, setRecommendedIngredients] = useState({answer:"", concerns:[], ingredients:[]});
-  const { answer, concerns, ingredients} = recommendedIngredients;
+  const [recommendedIngredients, setRecommendedIngredients] = useState(null);
   const totalQuestions = 5;
 
 
@@ -23,14 +22,13 @@ function UserView() {
     .then(response => response.json())
     .then(data => {
       setQuiz(data);
-      console.log(quiz)
     })
     . catch(error => {
     console.log(error)
     });
   };
 
-  const getIngredients = id => {
+  const getIngredients = async id => {
     fetch(`/api/answers/${id}`)
     .then(response => response.json())
     .then(data => {
@@ -43,19 +41,30 @@ function UserView() {
 
   const onAnswerSelected = (answer, index) => {
     setSelectedAnswerIndex(index)
-    if (quiz.id === 3 && selectedAnswers.length < 3) {
-      setSelectedAnswers([...selectedAnswers, answer]);
-    } else if (quiz.id !== 3) {
-      setSelectedAnswers([answer]);
-    }
-  }
+    const selectedAnswer = answers[index];
+    setSelectedAnswers((prevSelectedAnswers) => {
+      if (quiz.id === 3 && selectedAnswers.length < 3) {
+        return([...prevSelectedAnswers, { id: selectedAnswer.id, answer }]);
+      } else if (quiz.id !== 3) {
+        return [{ id: selectedAnswer.id, answer }];
+      } else {
+        return prevSelectedAnswers;
+      }
+    });
+  };
 
   const onClickNext = async event => {
     event.preventDefault();
     setSelectedAnswerIndex(null);
 
-    const result = { id, question, answer: selectedAnswers.join(", ") };
+    const result = { 
+      id: selectedAnswers.map((answer) => answer.id), 
+      question, 
+      answer: selectedAnswers.map((answer) => answer.answer).join(", ")
+    };    
     const newResults = [...quizResults, result];
+
+    console.log(newResults)
 
     if (selectedAnswers.length === 0) {
       alert("Please select an answer.");
@@ -76,24 +85,29 @@ function UserView() {
       setSelectedAnswers([]);
     } else {
       alert (`Your answers are: ${newResults.map((result) => result.question + " " + result.answer).join(" \n ")}.`);      
-      // let resultIDs = (newResults.map((result) => result.id + " " ));
-      // console.log(resultIDs)
-      // for (let id of resultIDs) {
-      //   getIngredients(id)
-      //   console.log(recommendedIngredients)
-      // }
 
       try {
-        const fetchPromises = newResults.map(result => getIngredients(result.id));
-        const fetchedData = await Promise.all(fetchPromises);
-        console.log(fetchedData);
+        const idsArray = [];
+        newResults.forEach(result => result.id.forEach(id => idsArray.push(id)));
+        console.log(idsArray)
+
+        const fetchPromises = idsArray.map(id => fetch(`/api/answers/${id}`));
+
+        console.log(fetchPromises);
+
+        const responses = await Promise.all(fetchPromises);
+        const data = await Promise.all(responses.map(response => response.json()));
+
+        setRecommendedIngredients(data)
         setQuizResults([]);
         setShowResult(true);
       } catch (error) {
         console.log(error);
       }
     }
-  }
+  } 
+  
+  console.log(recommendedIngredients)
 
   return (
     <div>
@@ -109,12 +123,16 @@ function UserView() {
                 </h4>
                 <ul className="answersContainer">
                   {answers.map((object, index) => (
-                    <li key={object[index]}>
+                    <li key={object.id}>
                       <button
                         type="button"
-                        className={quiz.id === 3 && selectedAnswers.includes(answer) ? 'selected' : null ||
-                          selectedAnswerIndex === index ? 'selected' : null}
-                        onClick={() => onAnswerSelected(answer, index)}
+                        className={
+                          (quiz.id === 3 && selectedAnswers.some((answer) => answer.answer === object.answer)) ||
+                          selectedAnswerIndex === index
+                            ? "selected"
+                            : null
+                        }
+                        onClick={() => onAnswerSelected(object.answer, index)}
                       >{object.answer}</button>
                     </li>
                   ))}
@@ -143,12 +161,12 @@ function UserView() {
               <p>
                 Your concerns are 
                 <br/>
-                {ingredients.map((concerns, index) => (<span key={index}>{concerns}<br/></span>))}
+                {/* {recommendedIngredients.concerns.map((concern, index) => (<span key={index}>{concern}<br/></span>))} */}
               </p>
               <p>
                 Our recommended ingredients:
                 <br/>
-                {ingredients.map((ingredient, index) => (<span key={index}>{ingredient}<br/></span>))}
+                {recommendedIngredients.ingredients.map((ingredient, index) => (<span key={index}>{ingredient}<br/></span>))}
               </p>
           </div>                   
           )}
