@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 
 
 function UserView() {
-  const [quiz, setQuiz] = useState({ id:0, question: "", answers: [] });
+  const [quiz, setQuiz] = useState({ id:0, question: "", answers:[{answer: "", id:0}]});
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null)
   const [quizResults, setQuizResults] = useState([]);
+  const [showResult, setShowResult] = useState(false);
   const { id, question, answers } = quiz;
+  const [recommendedIngredients, setRecommendedIngredients] = useState({answer:"", concerns:[], ingredients:[]});
+  const { answer, concerns, ingredients} = recommendedIngredients;
   const totalQuestions = 5;
 
 
@@ -20,6 +23,18 @@ function UserView() {
     .then(response => response.json())
     .then(data => {
       setQuiz(data);
+      console.log(quiz)
+    })
+    . catch(error => {
+    console.log(error)
+    });
+  };
+
+  const getIngredients = id => {
+    fetch(`/api/answers/${id}`)
+    .then(response => response.json())
+    .then(data => {
+      setRecommendedIngredients(data);
     })
     . catch(error => {
     console.log(error)
@@ -35,7 +50,7 @@ function UserView() {
     }
   }
 
-  const onClickNext = event => {
+  const onClickNext = async event => {
     event.preventDefault();
     setSelectedAnswerIndex(null);
 
@@ -60,50 +75,84 @@ function UserView() {
       setQuizResults(newResults);
       setSelectedAnswers([]);
     } else {
-      alert(`Your answers are: ${newResults.map((result) => result.question + " " + result.answer).join(" \n ")}.`);      
-      setQuizResults([]);
-      showQuestionnaire(1);
+      alert (`Your answers are: ${newResults.map((result) => result.question + " " + result.answer).join(" \n ")}.`);      
+      // let resultIDs = (newResults.map((result) => result.id + " " ));
+      // console.log(resultIDs)
+      // for (let id of resultIDs) {
+      //   getIngredients(id)
+      //   console.log(recommendedIngredients)
+      // }
+
+      try {
+        const fetchPromises = newResults.map(result => getIngredients(result.id));
+        const fetchedData = await Promise.all(fetchPromises);
+        console.log(fetchedData);
+        setQuizResults([]);
+        setShowResult(true);
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
   return (
     <div>
-        <h2>New here?</h2>
-        <h3>Skin assessment</h3>
-        <form onSubmit={onClickNext}>
-          <div>
-            <h4>
-              {id}. {question}
-            </h4>
-            <ul className="answersContainer">
-              {answers.map((answer, index) => (
-                <li key={answers[index]}>
-                  <button 
-                      type="button"
-                      className={quiz.id === 3 && selectedAnswers.includes(answer) ? 'selected' : null ||
-                        selectedAnswerIndex === index ? 'selected' : null} 
-                      onClick={() => onAnswerSelected(answer, index)}
-                  >{answer}</button>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="submitBtn">
-            <button type="submit" disabled={selectedAnswerIndex === null}>
-              {quiz.id >= totalQuestions ? 'Finish' : 'Next'}
-            </button>
-          </div>
-        </form>
+      <h2>New here?</h2>
+      <h3>Skin assessment</h3>
         <div>
-          <h4>Your answers are:</h4>
-          {quizResults.map((result, index) => (
-          <p key={index}>
-            {result.question}
-            <br/>
-            {result.answer}
-          </p>
-          ))}
-        </div>
+        {!showResult ? (
+          <div className="quizContainer">
+            <form onSubmit={onClickNext}>
+              <div>
+                <h4>
+                  {id}. {question}
+                </h4>
+                <ul className="answersContainer">
+                  {answers.map((object, index) => (
+                    <li key={object[index]}>
+                      <button
+                        type="button"
+                        className={quiz.id === 3 && selectedAnswers.includes(answer) ? 'selected' : null ||
+                          selectedAnswerIndex === index ? 'selected' : null}
+                        onClick={() => onAnswerSelected(answer, index)}
+                      >{object.answer}</button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="submitBtn">
+                <button type="submit" disabled={selectedAnswerIndex === null}>
+                  {quiz.id >= totalQuestions ? 'Finish' : 'Next'}
+                </button>
+              </div>
+            </form>
+            <div>
+                <h4>Your answers are:</h4>
+                {quizResults.map((result, index) => (
+                  <p key={index}>
+                    {result.question}
+                    <br />
+                    {result.answer}
+                  </p>
+                ))}
+              </div>
+            </div>  
+          ) : (
+          <div className="result">
+            <h3>Result</h3>
+              <p>
+                Your concerns are 
+                <br/>
+                {ingredients.map((concerns, index) => (<span key={index}>{concerns}<br/></span>))}
+              </p>
+              <p>
+                Our recommended ingredients:
+                <br/>
+                {ingredients.map((ingredient, index) => (<span key={index}>{ingredient}<br/></span>))}
+              </p>
+          </div>                   
+          )}
+      </div>
     </div>
   );
 }

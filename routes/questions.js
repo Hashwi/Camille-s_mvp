@@ -24,7 +24,7 @@ router.get("/:question_id/answers", async function(req, res) {
     
     const id = questionResult.data[0].id
     const question = questionResult.data[0].question;
-    const answers = answersResult.data.map(object => object.answer)
+    const answers = answersResult.data.map(object => ({answer: object.answer, id: object.id}))
     const quizSet = {id, question, answers}
 
     res.send(quizSet);

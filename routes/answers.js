@@ -51,7 +51,7 @@ router.get("/:answer_id", async function(req, res) {
 
     const answer = answersResult.data[0].answer;
     const concerns = concernsResult.data.map(object => object.concern); 
-    const ingredients = [...new Set(matchingIngredients.data.map(object => object.name))];
+    const ingredients = matchingIngredients.data.map(object => object.name);
     const recommendation = {answer, concerns, ingredients};
 
     res.send(recommendation);
