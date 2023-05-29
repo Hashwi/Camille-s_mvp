@@ -44,15 +44,15 @@ router.get("/:answer_id/concerns/ingredients", async function(req, res) {
       `SELECT * FROM concerns WHERE answer_ID = ${answer_id};`
     )
     const matchingIngredients = await db(
-      `SELECT concerns.concern, concernsIngredients.concern_ID, ingredients.name, concernsIngredients.ingredient_ID FROM concerns  LEFT JOIN concernsIngredients ON concerns.id = concernsIngredients.concern_ID LEFT JOIN ingredients ON ingredients.id = concernsIngredients.ingredient_ID WHERE answer_ID = ${answer_id};`
+      `SELECT concerns.id, concerns.concern, concernsIngredients.concern_ID, ingredients.id, ingredients.name, concernsIngredients.ingredient_ID FROM concerns LEFT JOIN concernsIngredients ON concerns.id = concernsIngredients.concern_ID LEFT JOIN ingredients ON ingredients.id = concernsIngredients.ingredient_ID WHERE answer_ID = ${answer_id};`
     )
 
-    console.log(matchingIngredients.data)
+    // console.log(matchingIngredients.data)
 
     const answer = answersResult.data[0].answer;
     const concerns = concernsResult.data.map(object => object.concern); 
-    const ingredients = matchingIngredients.data.map(object => object.name);
-    const recommendation = {id, answer, concerns, ingredients};
+    const ingredients = [...new Set(matchingIngredients.data.map(object => object.name))];
+    const recommendation = {answer, concerns, ingredients};
 
     res.send(recommendation);
   } catch (error) {
