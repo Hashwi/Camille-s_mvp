@@ -6,10 +6,11 @@ function AdminView() {
   return (
     <div>
         <h2>Welcome back!</h2>
-        <form>
+        <form className="loginForm">
             <input className="userID" type="text" placeholder="Username" />
             <input className="userPW" type="text" placeholder="Password"/>
-            <button>Login</button>
+            <br/>
+            <button className="loginBtn">Login</button>
         </form>
     </div>
   );

@@ -145,7 +145,7 @@ function UserView() {
                 </h4>
                 <ul className="answersContainer">
                   {answers.map((object, index) => (
-                    <li key={object.id}>
+                    <li key={object.id} className="answerBtn">
                       <button
                         type="button"
                         className={

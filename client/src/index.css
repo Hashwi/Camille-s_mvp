@@ -83,12 +83,21 @@ button:disabled {
 .answersContainer {
   display: flex;
   flex-wrap: wrap;
-  align-content: space-between;
+  align-content: center;
   justify-content: space-evenly;
+}
+
+.answerBtn {
+  margin-bottom: 20px;
+  margin-right: 20px;
 }
 
 .viewButtons {
   margin-left: 50px;
+}
+
+.oldUserButton, .newUserButton{
+  margin-right: 15px;
 }
 
 .submitBtn {
@@ -96,13 +105,26 @@ button:disabled {
   font-size: 1.25em;
 }
 
+.loginForm {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
 
+.loginBtn {
+  margin-left: 15px ;
+}
+
+.userID {
+  margin-right: 15px;
+}
 
 
 @media (prefers-color-scheme: light) {
   :root {
     color: #4B4A67;
     background-color: #DDD1C7;
+    margin-left: 50px;
   }
   button {
     background-color: #f9f9f9;
