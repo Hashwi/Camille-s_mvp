@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { ColorRing } from  'react-loader-spinner'
 
 
 function UserView() {
@@ -9,6 +10,7 @@ function UserView() {
   const [showResult, setShowResult] = useState(false);
   const { id, question, answers } = quiz;
   const [recommendedIngredients, setRecommendedIngredients] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const totalQuestions = 5;
 
 
@@ -18,13 +20,16 @@ function UserView() {
   }, []);
 
   const showQuestionnaire = id => {
+    setIsLoading(true)
     fetch(`/api/questions/${id}/answers`)
     .then(response => response.json())
     .then(data => {
       setQuiz(data);
+      setIsLoading(false)
     })
     . catch(error => {
     console.log(error)
+    setIsLoading(false)
     });
   };
 
@@ -79,6 +84,8 @@ function UserView() {
       return;
     }
 
+    setIsLoading(true);
+
     if (quiz.id !== totalQuestions) {
       showQuestionnaire((quiz.id) +1);
       setQuizResults(newResults);
@@ -102,6 +109,7 @@ function UserView() {
         console.log(error);
       }
     }
+    setIsLoading(false);
   } 
   
   // console.log(recommendedIngredients)
@@ -114,6 +122,17 @@ function UserView() {
         <div>
         {!showResult ? (
           <div className="quizContainer">
+            {isLoading ? (
+              <ColorRing
+              visible={true}
+              height="80"
+              width="80"
+              ariaLabel="blocks-loading"
+              wrapperStyle={{}}
+              wrapperClass="blocks-wrapper"
+              colors={['#DDD1C7', '#C2CFB2', '#8DB580', '#7E8987', '#4B4A67']}
+            />
+            ) : (
             <form onSubmit={onClickNext}>
               <div>
                 <h4>
@@ -138,10 +157,11 @@ function UserView() {
               </div>
               <div className="submitBtn">
                 <button type="submit" disabled={selectedAnswerIndex === null}>
-                  {quiz.id >= totalQuestions ? 'Finish' : 'Next'}
+                  {isLoading? "Loading..." : quiz.id >= totalQuestions ? 'Finish' : 'Next'}
                 </button>
               </div>
             </form>
+            )}
             <div>
                 <h4>Your answers are:</h4>
                 {quizResults.map((result, index) => (
