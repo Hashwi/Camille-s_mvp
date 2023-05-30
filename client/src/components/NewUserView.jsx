@@ -105,11 +105,11 @@ function UserView() {
         setRecommendedIngredients(data)
         setShowResult(true);
         setQuizResults([]);
+        setIsLoading(false);
       } catch (error) {
         console.log(error);
       }
     }
-    setIsLoading(false);
   } 
   
   // console.log(recommendedIngredients)
