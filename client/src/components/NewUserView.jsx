@@ -33,17 +33,6 @@ function UserView() {
     });
   };
 
-  // const getIngredients = async id => {
-  //   fetch(`/api/answers/${id}`)
-  //   .then(response => response.json())
-  //   .then(data => {
-  //     setRecommendedIngredients(data);
-  //   })
-  //   . catch(error => {
-  //   console.log(error)
-  //   });
-  // };
-
   const onAnswerSelected = (answer, index) => {
     setSelectedAnswerIndex(index)
     const selectedAnswer = answers[index];

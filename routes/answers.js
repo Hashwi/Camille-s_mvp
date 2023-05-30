@@ -46,9 +46,6 @@ router.get("/:answer_id", async function(req, res) {
     const matchingIngredients = await db(
       `SELECT concerns.id, concerns.concern, concernsIngredients.concern_ID, ingredients.id, ingredients.name, concernsIngredients.ingredient_ID FROM concerns LEFT JOIN concernsIngredients ON concerns.id = concernsIngredients.concern_ID LEFT JOIN ingredients ON ingredients.id = concernsIngredients.ingredient_ID WHERE answer_ID = ${answer_id};`
     )
-
-    // console.log(matchingIngredients.data)
-
     const answer = answersResult.data[0].answer;
     const concerns = concernsResult.data.map(object => object.concern); 
     const ingredients = matchingIngredients.data.map(object => object.name);
@@ -59,30 +56,6 @@ router.get("/:answer_id", async function(req, res) {
     res.status(500).send(error);
   }
 });
-
-// SELECT table1.object, table2.object
-// FROM table1
-// INNER JOIN table2 ON table1.id - table2.id
-
-
-// GET one concern with corresponding ingredients
-// router.get("/concern.id/ingredients", async function(req, res) {
-//   const { concern.id } = req.params;
-//   try {
-//     const in
-
-  
-  
-    
-//     res.send(quizOutcome);
-//   } catch (error) {
-//     res.status(500).send(error);
-//   }
-// });
-
-
-
-
 
 // ADD an new answer
 router.post("/", async function(req, res) {
