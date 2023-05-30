@@ -158,17 +158,21 @@ function UserView() {
             <h3>Result</h3>
             <div>
               <h4>Based on your answers, your skin concerns are:</h4>
+              <p>
               {Array.from(new Set(recommendedIngredients.map(object => (object.concerns).join(", "))))
                 .map((concern, index) => (
                   <span key={index}>{concern}<br/></span>
                 ))}
+              </p>
             </div>
             <div>
               <h4>As such, our recommended ingredients are:</h4>
+              <p>
               {Array.from(new Set(recommendedIngredients.map(object => object.ingredients).flat()))
                 .map((ingredients, index) => (
                   <span key={index}>{ingredients}<br/></span>
                 ))}
+              </p>
             </div>
           </div>                   
         )}
