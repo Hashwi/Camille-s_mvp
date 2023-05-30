@@ -104,3 +104,7 @@ When they get on the page, the users will by default be on the registered user p
 
 New user will then be prompted to complete a quiz. 5 questions will be asked with pre-created answers they can click on to select. 
 At the end of the quiz, the page will display their results: the concerns pointed out by the answers selected and the corresponding ingredients recommended.
+
+See [quiz](/Questions-answers%20layout.png)
+
+See [styling palette](/My%20MVP%20color%20palette.png)
