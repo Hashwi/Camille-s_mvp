@@ -28,16 +28,16 @@ function UserView() {
     });
   };
 
-  const getIngredients = async id => {
-    fetch(`/api/answers/${id}`)
-    .then(response => response.json())
-    .then(data => {
-      setRecommendedIngredients(data);
-    })
-    . catch(error => {
-    console.log(error)
-    });
-  };
+  // const getIngredients = async id => {
+  //   fetch(`/api/answers/${id}`)
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     setRecommendedIngredients(data);
+  //   })
+  //   . catch(error => {
+  //   console.log(error)
+  //   });
+  // };
 
   const onAnswerSelected = (answer, index) => {
     setSelectedAnswerIndex(index)
@@ -64,14 +64,14 @@ function UserView() {
     };    
     const newResults = [...quizResults, result];
 
-    console.log(newResults)
+    // console.log(newResults)
 
     if (selectedAnswers.length === 0) {
       alert("Please select an answer.");
       return;
     }
     if (quiz.id === 3 && selectedAnswers.length > 3) {
-      alert("Please select 3 concerns.");
+      alert("Please select 3 concerns maximum.");
       return;
     } 
     if (quiz.id !== 3 && selectedAnswers.length > 1) {
@@ -84,31 +84,29 @@ function UserView() {
       setQuizResults(newResults);
       setSelectedAnswers([]);
     } else {
-      alert (`Your answers are: ${newResults.map((result) => result.question + " " + result.answer).join(" \n ")}.`);      
-
+      // alert (`Your answers are: ${newResults.map((result) => result.question + " " + result.answer).join(" \n ")}.`);      
       try {
         const idsArray = [];
         newResults.forEach(result => result.id.forEach(id => idsArray.push(id)));
-        console.log(idsArray)
+
+        // console.log(idsArray)
 
         const fetchPromises = idsArray.map(id => fetch(`/api/answers/${id}`));
-
-        console.log(fetchPromises);
-
         const responses = await Promise.all(fetchPromises);
         const data = await Promise.all(responses.map(response => response.json()));
 
         setRecommendedIngredients(data)
-        setQuizResults([]);
         setShowResult(true);
+        setQuizResults([]);
       } catch (error) {
         console.log(error);
       }
     }
   } 
   
-  console.log(recommendedIngredients)
+  // console.log(recommendedIngredients)
 
+  
   return (
     <div>
       <h2>New here?</h2>
@@ -158,18 +156,22 @@ function UserView() {
           ) : (
           <div className="result">
             <h3>Result</h3>
-              <p>
-                Your concerns are 
-                <br/>
-                {/* {recommendedIngredients.concerns.map((concern, index) => (<span key={index}>{concern}<br/></span>))} */}
-              </p>
-              <p>
-                Our recommended ingredients:
-                <br/>
-                {recommendedIngredients.ingredients.map((ingredient, index) => (<span key={index}>{ingredient}<br/></span>))}
-              </p>
+            <div>
+              <h4>Based on your answers, your skin concerns are:</h4>
+              {Array.from(new Set(recommendedIngredients.map(object => (object.concerns).join(", "))))
+                .map((concern, index) => (
+                  <span key={index}>{concern}<br/></span>
+                ))}
+            </div>
+            <div>
+              <h4>As such, our recommended ingredients are:</h4>
+              {Array.from(new Set(recommendedIngredients.map(object => object.ingredients).flat()))
+                .map((ingredients, index) => (
+                  <span key={index}>{ingredients}<br/></span>
+                ))}
+            </div>
           </div>                   
-          )}
+        )}
       </div>
     </div>
   );
