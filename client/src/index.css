@@ -34,6 +34,16 @@ h4 {
   font-family: 'Playfair Display', serif;
 }
 
+.colorRing {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.intro, .result {
+  font-size: 1.12em;
+}
+
 .selected {
   background-color: #8DB580;
 }
@@ -85,6 +95,9 @@ button:disabled {
   text-align: center;
   font-size: 1.25em;
 }
+
+
+
 
 @media (prefers-color-scheme: light) {
   :root {

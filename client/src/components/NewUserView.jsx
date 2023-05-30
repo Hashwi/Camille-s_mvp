@@ -117,12 +117,16 @@ function UserView() {
   
   return (
     <div>
-      <h2>New here?</h2>
-      <h3>Skin assessment</h3>
         <div>
         {!showResult ? (
           <div className="quizContainer">
+            <h2>New here?</h2>
+            <p className="intro">
+              Take our test to find out what ingredients to look for in your skincare.
+            </p>
+            <h3>Skin assessment</h3>
             {isLoading ? (
+            <div className="colorRing">
               <ColorRing
               visible={true}
               height="80"
@@ -132,6 +136,7 @@ function UserView() {
               wrapperClass="blocks-wrapper"
               colors={['#DDD1C7', '#C2CFB2', '#8DB580', '#7E8987', '#4B4A67']}
             />
+            </div>
             ) : (
             <form onSubmit={onClickNext}>
               <div>
@@ -174,11 +179,11 @@ function UserView() {
               </div>
             </div>  
           ) : (
-          <div className="result">
-            <h3>Result</h3>
+          <div>
+            <h3>Results</h3>
             <div>
               <h4>Based on your answers, your skin concerns are:</h4>
-              <p>
+              <p className="result">
               {Array.from(new Set(recommendedIngredients.map(object => (object.concerns).join(", "))))
                 .map((concern, index) => (
                   <span key={index}>{concern}<br/></span>
@@ -187,7 +192,7 @@ function UserView() {
             </div>
             <div>
               <h4>As such, our recommended ingredients are:</h4>
-              <p>
+              <p className="result">
               {Array.from(new Set(recommendedIngredients.map(object => object.ingredients).flat()))
                 .map((ingredients, index) => (
                   <span key={index}>{ingredients}<br/></span>
