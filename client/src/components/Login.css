@@ -1,0 +1,40 @@
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+    font-family: 'Pacifico', cursive;
+  }
+  
+  .loginForm form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .loginForm label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .loginForm input {
+    padding: 8px;
+    margin-bottom: 10px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .loginForm button {
+    padding: 10px 20px;
+    background-color:#8DB580;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .loginForm button:hover {
+    background-color: #ccc;
+  }
+  

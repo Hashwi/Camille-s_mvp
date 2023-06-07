@@ -1,5 +1,7 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { ColorRing } from  'react-loader-spinner'
+import { apiUrl } from "../App";
 
 
 function UserView() {
@@ -19,18 +21,18 @@ function UserView() {
     showQuestionnaire(1);
   }, []);
 
-  const showQuestionnaire = id => {
+  const  showQuestionnaire = async id => {
     setIsLoading(true)
-    fetch(`/api/questions/${id}/answers`)
-    .then(response => response.json())
-    .then(data => {
-      setQuiz(data);
-      setIsLoading(false)
-    })
-    . catch(error => {
+    try{
+      const {data}  = await axios.get(`${apiUrl}/api/questions/${id}/answers`)
+        setQuiz(data);
+        setIsLoading(false)
+    }catch(error){
     console.log(error)
     setIsLoading(false)
-    });
+    };
+
+   
   };
 
   const onAnswerSelected = (answer, index) => {
@@ -87,9 +89,9 @@ function UserView() {
 
         // console.log(idsArray)
 
-        const fetchPromises = idsArray.map(id => fetch(`/api/answers/${id}`));
+        const fetchPromises = idsArray.map(id => axios.get(`${apiUrl}/api/answers/${id}`));
         const responses = await Promise.all(fetchPromises);
-        const data = await Promise.all(responses.map(response => response.json()));
+        const data = await Promise.all(responses.map(response => response.data));
 
         setRecommendedIngredients(data)
         setShowResult(true);

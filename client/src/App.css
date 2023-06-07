@@ -1,5 +1,33 @@
+/* styles.css */
 
-
-
-
-
+.appContainer {
+    padding: 20px;
+  }
+  
+  .viewButtons {
+    display: flex;
+    justify-content: right;
+    margin-bottom: 20px;
+  }
+  
+  .viewButtons button {
+    padding: 10px 20px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+  }
+  
+  .oldUserButton {
+    background-color: #8DB580;
+  }
+  
+  .newUserButton {
+    background-color: #8DB580;
+  }
+  
+  h1 {
+    text-align: center;
+  }
+  

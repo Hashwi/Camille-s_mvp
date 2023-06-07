@@ -36,7 +36,11 @@ router.get("/:answer_id/concerns", async function(req, res) {
 // GET one answer with corresponding concerns and ingredients
 router.get("/:answer_id", async function(req, res) {
   const { answer_id } = req.params;
+  const {id:user_id} = req.user;
   try {
+    const useranswers = await db (
+      `INSERT INTO useranswers (answer_id, user_id) VALUES ("${answer_id}","${user_id}");`
+    )
     const answersResult = await db(
       `SELECT * FROM answers WHERE id = ${answer_id};`
     );

@@ -8,6 +8,9 @@ const cors = require('cors');
 const indexRouter = require('./routes/index');
 const questionsRouter = require('./routes/questions');
 const answersRouter = require('./routes/answers');
+const usersRouter = require('./routes/users');
+const JWTValidator = require("./routes/guards/JWTValidator");
+const profileRouter = require('./routes/profile');
 
 const app = express();
 
@@ -18,8 +21,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api/index', indexRouter);
-app.use('/api/questions', questionsRouter);
-app.use('/api/answers', answersRouter);
+app.use('/api/index', JWTValidator, indexRouter);
+app.use('/api/questions', JWTValidator, questionsRouter);
+app.use('/api/answers', JWTValidator, answersRouter);
+app.use('/api/profile',JWTValidator,profileRouter);
+app.use('/api/users', usersRouter);
 
 module.exports = app;
