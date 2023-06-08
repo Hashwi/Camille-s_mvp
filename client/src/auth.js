@@ -20,8 +20,9 @@ const authProvider = {
               if (!response.ok) throw new Error(response.statusText);
 
                 const data = await response.json()
-                localStorage.setItem("user", JSON.stringify(data))
-                localStorage.setItem("token", data.token)
+                localStorage.setItem("user_id", JSON.stringify(data.user.id))
+                console.log(data)
+                localStorage.setItem("token", data.user.token)
                 authProvider.isAuthenticated = true;
                 authProvider.user = data;
                callback.setUser(data)

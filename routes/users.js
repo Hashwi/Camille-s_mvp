@@ -27,8 +27,12 @@ router.post('/login', async function(req, res, next) {
    if(results.data.length){
     const user = results.data[0]
     let token =  sign({ user_name: user.user_name, name: user.name, id: user.id }, process.env.JWT_SECRET)
-    res.send(
-      {token, id:user.id}
+    user.token = token
+    console.log(user)
+    console.log(token)
+    res.send( 
+      {user}
+      
     )
    } else {
     res.status(404).send("User not found" )
